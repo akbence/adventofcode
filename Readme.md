@@ -1,6 +1,8 @@
-# Welcome to my Advent of code challenge
+# Welcome to my Advent of code challenge solutions, written in Java
 
-I aim to create solutions for the popular [advent of code challenge](https://adventofcode.com). 
+I aim to create solutions for the popular [advent of code challenge](https://adventofcode.com).
+If you would like to check out the 2020 challenge, with different programming languages each day,
+then visit [this](https://github.com/akbence/adventofcode2020) collaborational project
 
 ## Instructions for running the solutions
 
