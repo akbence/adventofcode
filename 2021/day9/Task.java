@@ -59,26 +59,26 @@ public class Task {
 
         var rightJ = j == lineSize - 1 ? -1 : j + 1;
         var right = rightJ == -1 ? 9 : lines.get(i).get(rightJ);
-        if (actual + 1 == right && right != 9 && !alreadySummed.contains(i + "," + rightJ)) {
+        if (actual < right && right != 9 && !alreadySummed.contains(i + "," + rightJ)) {
             calcBasin(i, rightJ, lines, alreadySummed);
         }
 
         var leftJ = j == 0 ? -1 : j - 1;
         var left = leftJ == -1 ? 9 : lines.get(i).get(leftJ);
 
-        if (actual + 1 == left && left != 9 && !alreadySummed.contains(i + "," + leftJ)) {
+        if (actual < left && left != 9 && !alreadySummed.contains(i + "," + leftJ)) {
             calcBasin(i, leftJ, lines, alreadySummed);
         }
 
         var topI = i == 0 ? -1 : i - 1;
         var top = topI == -1 ? 9 : lines.get(topI).get(j);
-        if (actual + 1 == top && top != 9 && !alreadySummed.contains(topI + "," + j)) {
+        if (actual < top && top != 9 && !alreadySummed.contains(topI + "," + j)) {
             calcBasin(topI, j, lines, alreadySummed);
         }
 
         var bottomI = i == lines.size() - 1 ? -1 : i + 1;
         var bottom = bottomI == -1 ? 9 : lines.get(bottomI).get(j);
-        if (actual + 1 == bottom && bottom != 9 && !alreadySummed.contains(bottomI + "," + j)) {
+        if (actual < bottom && bottom != 9 && !alreadySummed.contains(bottomI + "," + j)) {
             calcBasin(bottomI, j, lines, alreadySummed);
         }
         System.out.println("AT: " + i + "," + j + " => " + alreadySummed);
