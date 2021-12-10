@@ -27,8 +27,8 @@ public class Task {
         for (int i = 0; i < lines.size(); i++) {
             for (int j = 0; j < lineSize; j++) {
                 var actual = lines.get(i).get(j);
-                var right = j == lineSize - 1 ? lines.get(i).get(0) : lines.get(i).get(j + 1);
-                var left = j == 0 ? lines.get(i).get(lineSize - 1) : lines.get(i).get(j - 1);
+                var right = j == lineSize - 1 ? 10 : lines.get(i).get(j + 1);
+                var left = j == 0 ? 10 : lines.get(i).get(j - 1);
                 var top = i == 0 ? 10 : lines.get(i - 1).get(j);
                 var bottom = i == lines.size() - 1 ? 10 : lines.get(i + 1).get(j);
                 if (actual < right && actual < left && actual < top && actual < bottom) {
@@ -44,43 +44,44 @@ public class Task {
         List<Integer> sums = new ArrayList<>();
 
         for (Tuple lowPosition : lowPositions) {
-            Map<String, Boolean> alreadySummed = new HashMap<>();
+            Set<String> alreadySummed = new HashSet<>();
             System.out.println("LOOP: " + lowPosition.i + ":" + lowPosition.j);
-            calcBasin(lowPosition.i, lowPosition.j, heightmap, 0, alreadySummed);
+            calcBasin(lowPosition.i, lowPosition.j, heightmap, alreadySummed);
             sums.add(alreadySummed.size());
         }
-        return sums.stream().sorted(Collections.reverseOrder()).limit(3).reduce((i1, i2 ) -> i1*i2).get();
+        return sums.stream().sorted(Collections.reverseOrder()).limit(3).reduce((i1, i2) -> i1 * i2).get();
     }
 
-    private static void calcBasin(int i, int j, List<List<Integer>> lines, int sum, Map<String, Boolean> alreadySummed) {
-        alreadySummed.put(i + "," + j, true);
+    private static void calcBasin(int i, int j, List<List<Integer>> lines, Set<String> alreadySummed) {
+        alreadySummed.add(i + "," + j);
         var lineSize = lines.get(0).size();
         var actual = lines.get(i).get(j);
 
-        var rightJ = j == lineSize - 1 ? 0 : j + 1;
-        var right = lines.get(i).get(rightJ);
-        if (actual + 1 == right && right != 9 && alreadySummed.get(i + "," + rightJ) == null) {
-            calcBasin(i, rightJ, lines, sum, alreadySummed);
+        var rightJ = j == lineSize - 1 ? -1 : j + 1;
+        var right = rightJ == -1 ? 9 : lines.get(i).get(rightJ);
+        if (actual + 1 == right && right != 9 && !alreadySummed.contains(i + "," + rightJ)) {
+            calcBasin(i, rightJ, lines, alreadySummed);
         }
 
-        var leftJ = j == 0 ? lineSize - 1 : j - 1;
-        var left = lines.get(i).get(leftJ);
+        var leftJ = j == 0 ? -1 : j - 1;
+        var left = leftJ == -1 ? 9 : lines.get(i).get(leftJ);
 
-        if (actual + 1 == left && left != 9 && alreadySummed.get(i + "," + leftJ) == null) {
-            calcBasin(i, leftJ, lines, sum, alreadySummed);
+        if (actual + 1 == left && left != 9 && !alreadySummed.contains(i + "," + leftJ)) {
+            calcBasin(i, leftJ, lines, alreadySummed);
         }
 
         var topI = i == 0 ? -1 : i - 1;
         var top = topI == -1 ? 9 : lines.get(topI).get(j);
-        if (actual + 1 == top && top != 9 && alreadySummed.get(topI + "," + j) == null) {
-            calcBasin(topI, j, lines, sum, alreadySummed);
+        if (actual + 1 == top && top != 9 && !alreadySummed.contains(topI + "," + j)) {
+            calcBasin(topI, j, lines, alreadySummed);
         }
 
         var bottomI = i == lines.size() - 1 ? -1 : i + 1;
         var bottom = bottomI == -1 ? 9 : lines.get(bottomI).get(j);
-        if (actual + 1 == bottom && bottom != 9 && alreadySummed.get(bottomI + "," + j) == null) {
-            calcBasin(bottomI, j, lines, sum, alreadySummed);
+        if (actual + 1 == bottom && bottom != 9 && !alreadySummed.contains(bottomI + "," + j)) {
+            calcBasin(bottomI, j, lines, alreadySummed);
         }
+        System.out.println("AT: " + i + "," + j + " => " + alreadySummed);
     }
 
     static class Tuple {
