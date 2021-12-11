@@ -31,21 +31,23 @@ public class Task {
                 }
             }
             var changed = true;
+            Set<String> set = new HashSet<>();
             while (changed) {
                 for (int i = 0; i < octopuses.size(); i++) {
                     for (int j = 0; j < octopuses.get(i).size(); j++) {
                         changed = false;
-                        if (octopuses.get(i).get(j) > 9) {
-                            System.out.println("current:" + i + ":" + j);
+                        if (octopuses.get(i).get(j) > 9 && !set.contains(i+","+j)) {
+                            set.add(i+","+j);
+                            //System.out.println("current:" + i + ":" + j);
                             for (int row = -1; row < 2; row++) {
                                 for (int column = -1; column < 2; column++) {
                                     if (!(row == 0 && column == 0)
                                             && row + i != octopuses.size() && row + i >= 0
                                             && column + j != octopuses.get(i).size() && column + j >= 0
                                     ) {
-                                        System.out.println(row + i + ":" + (column + j));
+                                        //System.out.println(row + i + ":" + (column + j));
                                         octopuses.get(i + row).set(j + column, octopuses.get(i + row).get(j + column) + 1);
-                                        if (octopuses.get(i).get(j) == 9) {
+                                        if (octopuses.get(i).get(j) == 10) {
                                             changed = true;
                                         }
                                     }
