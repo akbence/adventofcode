@@ -22,7 +22,7 @@ public class Task {
         task2Solve();
 
         System.out.println("Task1 solution: " + paths.size());
-        System.out.println("Task1 solution: " + paths2.size());
+        System.out.println("Task2 solution: " + paths2.size());
     }
 
     private static void task1Solve() {
